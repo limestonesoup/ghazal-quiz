@@ -27,15 +27,15 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script>
-    // 🔴 REPLACE WITH YOUR FIREBASE CONFIG
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-      projectId: "YOUR_PROJECT",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "YOUR_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyCkjGQBjbaJRwRvUCl83TgA1jcEOxDrMNQ",
+      authDomain: "ghazalworkshop-b5855.firebaseapp.com",
+      databaseURL: "https://ghazalworkshop-b5855-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ghazalworkshop-b5855",
+      storageBucket: "ghazalworkshop-b5855.firebasestorage.app",
+      messagingSenderId: "265959846827",
+      appId: "1:265959846827:web:e4b71f7dc9dc24efbc58ee",
+      measurementId: "G-DR9JRSHV57"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -70,7 +70,7 @@
         window.location.href = '/play.html';
       } catch (err) {
         console.error(err);
-        showError('Error joining. Try again!');
+        showError('Error joining. Check database rules!');
         btn.disabled = false;
         btn.textContent = 'Join Quiz ✦';
       }
