@@ -1,29 +1,137 @@
 [
   {
     "id": 1,
-    "type": "mcq",
-    "question": "Complete the sher: 'Hazaaron khwahishein aisi ke har khwahish pe ___ nikle'",
-    "options": ["jaan", "dil", "dam", "aah"],
-    "correct": 2,
-    "points": 10,
-    "timeLimit": 20
+    "type": "poll",
+    "question": "Stage 1: Let's start! How familiar are you with the world of Ghazals?",
+    "options": ["Just here for the vibes", "I listen to Jagjit Singh/Mehdi Hassan", "I actively read Ghalib/Faiz", "I write my own poetry!"],
+    "correct": -1,
+    "points": 0,
+    "timeLimit": 25
   },
   {
     "id": 2,
     "type": "mcq",
-    "question": "Who wrote: 'Ye na thi hamari qismat ke visaal-e-yaar hota'?",
-    "options": ["Mir Taqi Mir", "Mirza Ghalib", "Faiz Ahmed Faiz", "Ahmed Faraz"],
+    "question": "In a Ghazal, what do we call a single couplet (two lines) that contains a complete, independent thought?",
+    "options": ["Misra (मिसरा)", "Sher (शेर)", "Kalam (कलाम)", "Nazm (नज़्म)"],
     "correct": 1,
     "points": 10,
     "timeLimit": 20
   },
   {
     "id": 3,
+    "type": "mcq",
+    "question": "The opening couplet of a Ghazal, where BOTH lines rhyme perfectly, is known as the...",
+    "options": ["Maqta (मक़्ता)", "Matla (मतला)", "Radif (रदीफ़)", "Qaafiya (क़ाफ़िया)"],
+    "correct": 1,
+    "points": 10,
+    "timeLimit": 20
+  },
+  {
+    "id": 4,
+    "type": "mcq",
+    "question": "What is the 'Radif' (रदीफ़) in a Ghazal?",
+    "options": ["The poetic meter/rhythm", "The rhyming pattern", "The repeating word(s) at the very end of the line", "The poet's pen name"],
+    "correct": 2,
+    "points": 15,
+    "timeLimit": 25
+  },
+  {
+    "id": 5,
+    "type": "mcq",
+    "question": "In the concluding couplet, the poet weaves in their pen name (Takhallus). What is this final couplet called?",
+    "options": ["Matla (मतला)", "Maqta (मक़्ता)", "Beher (बहर)", "Misra-e-Sani"],
+    "correct": 1,
+    "points": 10,
+    "timeLimit": 20
+  },
+  {
+    "id": 6,
+    "type": "mcq",
+    "question": "Stage 2: Qaafiya (Rhyme) Test! दिए गए शब्द 'किताब' (Kitaab) के लिए सही क़ाफ़िया क्या है?",
+    "options": ["कागज़ (Kaagaz)", "कलम (Kalam)", "पन्ना (Panna)", "ग़ुलाब (Gulaab)"],
+    "correct": 3,
+    "points": 15,
+    "timeLimit": 20
+  },
+  {
+    "id": 7,
+    "type": "mcq",
+    "question": "इनमें से कौन सा शब्द 'सफ़र' (Safar) का क़ाफ़िया हो सकता है?",
+    "options": ["मुसाफ़िर (Musafir)", "डगर (Dagar)", "रास्ता (Raasta)", "मंज़िल (Manzil)"],
+    "correct": 1,
+    "points": 15,
+    "timeLimit": 20
+  },
+  {
+    "id": 8,
+    "type": "mcq",
+    "question": "दिए गए शब्द 'आवाज़' (Aawaaz) के साथ कौन सा विकल्प क़ाफ़िया में है?",
+    "options": ["खामोशी (Khamoshi)", "शोर (Shor)", "ध्वनि (Dhwani)", "साज़ (Saaz)"],
+    "correct": 3,
+    "points": 15,
+    "timeLimit": 20
+  },
+  {
+    "id": 9,
+    "type": "mcq",
+    "question": "शब्द 'दिल' (Dil) का सही क़ाफ़िया पहचानें।",
+    "options": ["प्यार (Pyaar)", "धड़कन (Dhadkan)", "महफ़िल (Mehfil)", "जान (Jaan)"],
+    "correct": 2,
+    "points": 15,
+    "timeLimit": 20
+  },
+  {
+    "id": 10,
+    "type": "mcq",
+    "question": "दिए गए शब्द 'दीवाना' (Deewana) के लिए क़ाफ़िया चुनें।",
+    "options": ["ज़माना (Zamaana)", "आशिक (Aashiq)", "मजनूँ (Majnu)", "पागल (Paagal)"],
+    "correct": 0,
+    "points": 15,
+    "timeLimit": 20
+  },
+  {
+    "id": 11,
+    "type": "mcq",
+    "question": "Stage 3: Legends! Mirza Asadullah Baig Khan used a 'Takhallus' (pen name) that became immortal. What was it?",
+    "options": ["Mir", "Zauq", "Ghalib", "Momin"],
+    "correct": 2,
+    "points": 10,
+    "timeLimit": 15
+  },
+  {
+    "id": 12,
+    "type": "mcq",
+    "question": "Complete this iconic Matla: 'Hazaaron khwahishein aisi ke har khwahish pe ___ nikle'",
+    "options": ["Jaan (जान)", "Dil (दिल)", "Dam (दम)", "Aah (आह)"],
+    "correct": 2,
+    "points": 15,
+    "timeLimit": 20
+  },
+  {
+    "id": 13,
+    "type": "mcq",
+    "question": "Who penned the legendary line: 'Ye na thi hamari qismat ke visaal-e-yaar hota'?",
+    "options": ["Mir Taqi Mir", "Mirza Ghalib", "Faiz Ahmed Faiz", "Jaun Elia"],
+    "correct": 1,
+    "points": 15,
+    "timeLimit": 20
+  },
+  {
+    "id": 14,
+    "type": "mcq",
+    "question": "The strict rhythmic meter or mathematical 'beat' that binds a Ghazal together is called...",
+    "options": ["Beher (बहर)", "Tarannum (तरन्नुम)", "Ruba'i (रुबाई)", "Ghazal-go (ग़ज़ल-गो)"],
+    "correct": 0,
+    "points": 20,
+    "timeLimit": 20
+  },
+  {
+    "id": 15,
     "type": "poll",
-    "question": "Which poet's work resonates with you the most?",
-    "options": ["Ghalib", "Faiz", "Mir", "Jaun Elia"],
+    "question": "After this Mehfil, how do you feel about the art of the Ghazal?",
+    "options": ["I want to try writing my own Matla!", "I'll definitely listen more closely to the lyrics now", "It's mathematically beautiful but tough!", "Wah Wah! (I just loved the vibes)"],
     "correct": -1,
     "points": 0,
-    "timeLimit": 15
+    "timeLimit": 25
   }
 ]
