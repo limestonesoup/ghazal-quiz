@@ -3,81 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ghazal Quiz — Play</title>
+  <title>Ghazal Quiz — Admin</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <div class="container">
+  <div id="authGate" class="container">
+    <div class="header"><h1>🔐 Admin Panel</h1></div>
+    <div class="card">
+      <div class="input-group">
+        <label>Admin Key</label>
+        <input type="text" id="adminKeyInput" placeholder="Enter admin key..." autofocus>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="checkAdmin()">Enter</button>
+    </div>
+  </div>
 
-    <!-- LOBBY SCREEN -->
-    <div id="screenLobby">
-      <div class="header">
-        <h1>✨ Ghazal Workshop</h1>
-        <p class="subtitle">Welcome, <span id="playerNameDisplay"></span>!</p>
-      </div>
-      <div class="card waiting">
-        <div class="spinner"></div>
-        <h2>Waiting for host to start...</h2>
-        <p style="color: var(--text-dim); margin-top: 10px;">The mehfil is about to begin</p>
-      </div>
+  <div id="adminPanel" class="container wide hidden">
+    <div class="header">
+      <h1>🎛️ Quiz Control</h1>
+      <p class="subtitle">Phase: <span class="status-badge lobby" id="currentPhase">LOBBY</span> | Players: <strong id="playerCount">0</strong> | Question: <strong id="currentQNum">—</strong></p>
     </div>
 
-    <!-- QUESTION SCREEN -->
-    <div id="screenQuestion" class="hidden">
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span id="qLabel" class="status-badge active">Question 1</span>
-          <span id="qType" class="status-badge lobby">MCQ</span>
+    <div class="admin-grid">
+      <div>
+        <div class="card">
+          <h2>🎮 Controls</h2>
+          <div class="btn-group" style="flex-direction: column;">
+            <button class="btn btn-primary btn-block" onclick="action('lobby')">🏠 Go to Lobby</button>
+            <button class="btn btn-success btn-block" onclick="action('startQuestion')">▶️ Start Question</button>
+            <button class="btn btn-warning btn-block" onclick="action('showResults')">📊 Show Results</button>
+            <button class="btn btn-secondary btn-block" onclick="action('showLeaderboard')">🏆 Show Leaderboard</button>
+            <button class="btn btn-primary btn-block" onclick="action('nextQuestion')">⏭️ Next Question</button>
+            <div class="divider"></div>
+            <button class="btn btn-danger btn-block" onclick="action('finish')">🏁 End Quiz</button>
+            <button class="btn btn-danger btn-block" onclick="if(confirm('Reset EVERYTHING?')) action('reset')" style="opacity:0.7;">🗑️ Full Reset</button>
+          </div>
         </div>
-        <div class="timer-bar-container">
-          <div class="timer-bar" id="timerBar" style="width: 100%"></div>
+
+        <div class="card">
+          <h2>📊 Live Stats</h2>
+          <p>Answers in: <strong id="answersCount">0</strong> / <strong id="totalPlayers">0</strong></p>
+          <div class="timer-bar-container">
+            <div class="timer-bar" id="answerBar" style="width: 0%"></div>
+          </div>
         </div>
-        <p id="timerText" style="text-align: right; color: var(--text-dim); font-size: 0.9rem;">20s</p>
-        <h2 id="questionText" style="font-size: 1.3rem; margin: 20px 0; color: var(--text); line-height: 1.5;"></h2>
-        <div class="options-grid" id="optionsContainer"></div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2>📝 Questions</h2>
+          <div id="questionList"></div>
+        </div>
+
+        <div class="card">
+          <h2>👥 Players</h2>
+          <div id="playersList" class="players-list"></div>
+        </div>
       </div>
     </div>
 
-    <!-- WAITING SCREEN -->
-    <div id="screenWaiting" class="hidden">
-      <div class="card waiting">
-        <div class="result-icon" id="waitEmoji">⏳</div>
-        <h2 id="waitText">Answer submitted!</h2>
-        <p style="color: var(--text-dim);">Waiting for the round to end...</p>
+    <div class="card mt-2">
+      <h2>➕ Add Question Live</h2>
+      <div class="input-group">
+        <label>Question</label>
+        <input type="text" id="newQ" placeholder="Type question...">
       </div>
-    </div>
-
-    <!-- RESULT SCREEN -->
-    <div id="screenResult" class="hidden">
-      <div class="card text-center">
-        <div class="result-icon" id="resultIcon">✅</div>
-        <h2 id="resultText">Correct!</h2>
-        <div class="points-earned" id="resultPoints">+10 points</div>
-        <p style="color: var(--text-dim); margin-top: 12px;" id="resultTotal">Total: 10 pts</p>
+      <div class="input-group">
+        <label>Type</label>
+        <select id="newQType">
+          <option value="mcq">MCQ</option>
+          <option value="poll">Poll</option>
+        </select>
       </div>
-    </div>
-
-    <!-- LEADERBOARD SCREEN -->
-    <div id="screenLeaderboard" class="hidden">
-      <div class="card">
-        <h2 style="text-align: center;">🏆 Leaderboard</h2>
-        <div id="leaderboardList"></div>
-        <p style="text-align:center; margin-top: 16px; color: var(--text-dim);" id="yourRank"></p>
+      <div class="input-group">
+        <label>Options (comma separated)</label>
+        <input type="text" id="newQOptions" placeholder="Opt A, Opt B, Opt C, Opt D">
       </div>
-    </div>
-
-    <!-- FINISHED SCREEN -->
-    <div id="screenFinished" class="hidden">
-      <div class="card text-center">
-        <div class="result-icon">🎉</div>
-        <h2>Mehfil Complete!</h2>
-        <p class="points-earned" id="finalScore">0</p>
-        <p style="color: var(--text-dim);">Thanks for participating!</p>
-        <div class="divider"></div>
-        <div id="finalLeaderboard"></div>
+      <div class="input-group">
+        <label>Correct Index (0-indexed, -1 for poll)</label>
+        <input type="number" id="newQCorrect" value="0" min="-1" max="5">
       </div>
+      <div class="input-group">
+        <label>Points / Time Limit (seconds)</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="number" id="newQPoints" value="10" placeholder="Points">
+          <input type="number" id="newQTime" value="20" placeholder="Time (s)">
+        </div>
+      </div>
+      <button class="btn btn-success btn-block" onclick="addQuestion()">Add Question</button>
     </div>
-
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -97,221 +111,148 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    const playerId = sessionStorage.getItem('playerId');
-    const playerName = sessionStorage.getItem('playerName');
-
-    if (!playerId || !playerName) { window.location.href = '/index.html'; }
-    document.getElementById('playerNameDisplay').textContent = playerName;
+    const ADMIN_KEY = 'ghazal2024shauq';
 
     let questions = [];
-    let timerInterval = null;
-    let currentAnswer = null;
-    let questionStartTime = null;
+    let currentGameState = {};
 
-    const screens = ['screenLobby', 'screenQuestion', 'screenWaiting', 'screenResult', 'screenLeaderboard', 'screenFinished'];
-    function showScreen(id) {
-      screens.forEach(s => document.getElementById(s).classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
+    function checkAdmin() {
+      const key = document.getElementById('adminKeyInput').value.trim();
+      const urlKey = new URLSearchParams(window.location.search).get('key');
+      if (key === ADMIN_KEY || urlKey === ADMIN_KEY) {
+        document.getElementById('authGate').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+        init();
+      } else { alert('Wrong key!'); }
     }
 
-    async function loadQuestions() {
-      const resp = await fetch('/questions.json');
-      let base = await resp.json();
-      const snap = await db.ref('customQuestions').once('value');
-      if (snap.val()) base = [...base, ...Object.values(snap.val())];
-      questions = base;
-    }
-    loadQuestions();
-    db.ref('customQuestions').on('value', () => loadQuestions());
-
-    db.ref('gameState').on('value', snap => {
-      const state = snap.val();
-      if (!state) { showScreen('screenLobby'); return; }
-
-      const phase = state.phase;
-      const qIndex = state.currentQuestion || 0;
-
-      if (phase === 'lobby') showScreen('screenLobby');
-      else if (phase === 'question') showQuestion(qIndex, state);
-      else if (phase === 'results') showResults(qIndex);
-      else if (phase === 'leaderboard') showLeaderboard();
-      else if (phase === 'finished') showFinished();
-    });
-
-    function showQuestion(qIndex, state) {
-      if (currentAnswer !== null && currentAnswer.qIndex === qIndex) {
-        showScreen('screenWaiting');
-        return;
+    window.onload = () => {
+      const urlKey = new URLSearchParams(window.location.search).get('key');
+      if (urlKey === ADMIN_KEY) {
+        document.getElementById('authGate').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+        init();
       }
-      currentAnswer = null;
-      const q = questions[qIndex];
-      if (!q) return;
+    };
 
-      document.getElementById('qLabel').textContent = `Question ${qIndex + 1}/${questions.length}`;
-      document.getElementById('qType').textContent = q.type === 'poll' ? 'POLL' : 'MCQ';
-      document.getElementById('questionText').textContent = q.question;
+    async function init() {
+      const loadAllQuestions = async () => {
+        const resp = await fetch('/questions.json');
+        let base = await resp.json();
+        const snap = await db.ref('customQuestions').once('value');
+        if (snap.val()) base = [...base, ...Object.values(snap.val())];
+        questions = base;
+        renderQuestionList();
+      };
+      
+      await loadAllQuestions();
+      db.ref('customQuestions').on('value', () => loadAllQuestions());
 
-      const container = document.getElementById('optionsContainer');
-      container.innerHTML = '';
-      const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-
-      q.options.forEach((opt, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.innerHTML = `<span class="option-letter">${letters[i]}</span>${opt}`;
-        btn.onclick = () => submitAnswer(qIndex, i, q, btn);
-        container.appendChild(btn);
+      db.ref('gameState').on('value', snap => {
+        currentGameState = snap.val() || {};
+        updateStatus();
       });
 
-      questionStartTime = state.questionStartedAt || Date.now();
-      startTimer(q.timeLimit || 20, state.questionStartedAt);
-      showScreen('screenQuestion');
-    }
+      db.ref('players').on('value', snap => {
+        const players = snap.val() || {};
+        const count = Object.keys(players).length;
+        document.getElementById('playerCount').textContent = count;
+        document.getElementById('totalPlayers').textContent = count;
 
-    function startTimer(totalSeconds, serverStartTime) {
-      clearInterval(timerInterval);
-      const bar = document.getElementById('timerBar');
-      const text = document.getElementById('timerText');
+        const container = document.getElementById('playersList');
+        container.innerHTML = '';
+        Object.entries(players).sort((a,b)=>(b[1].score||0)-(a[1].score||0)).forEach(([id, p]) => {
+          const chip = document.createElement('span');
+          chip.className = 'player-chip';
+          chip.textContent = `${p.name} (${p.score || 0})`;
+          container.appendChild(chip);
+        });
+      });
 
-      timerInterval = setInterval(() => {
-        const elapsed = (Date.now() - (serverStartTime || Date.now())) / 1000;
-        const remaining = Math.max(0, totalSeconds - elapsed);
-        const pct = (remaining / totalSeconds) * 100;
-
-        bar.style.width = pct + '%';
-        bar.className = 'timer-bar' + (remaining < 5 ? ' warning' : '');
-        text.textContent = Math.ceil(remaining) + 's';
-
-        if (remaining <= 0) {
-          clearInterval(timerInterval);
-          document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+      db.ref('gameState/currentQuestion').on('value', snap => {
+        const qIdx = snap.val();
+        if (qIdx !== null && qIdx !== undefined) {
+          db.ref(`answers/${qIdx}`).on('value', asnap => {
+            const answers = asnap.val() || {};
+            const count = Object.keys(answers).length;
+            document.getElementById('answersCount').textContent = count;
+            const total = parseInt(document.getElementById('totalPlayers').textContent) || 1;
+            document.getElementById('answerBar').style.width = `${(count / total) * 100}%`;
+          });
         }
-      }, 100);
-    }
-
-    async function submitAnswer(qIndex, optionIndex, question, btnEl) {
-      clearInterval(timerInterval);
-      currentAnswer = { qIndex, optionIndex };
-
-      document.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; });
-      btnEl.classList.add('selected');
-
-      const timeTaken = (Date.now() - questionStartTime) / 1000;
-      let points = 0;
-
-      if (question.type !== 'poll' && optionIndex === question.correct) {
-        const timeLimit = question.timeLimit || 20;
-        const timeBonus = Math.max(0.5, 1 - (timeTaken / timeLimit) * 0.5);
-        points = Math.round((question.points || 10) * timeBonus);
-      }
-
-      await db.ref(`answers/${qIndex}/${playerId}`).set({
-        answer: optionIndex,
-        timeTaken: Math.round(timeTaken * 10) / 10,
-        points: points
       });
-
-      if (points > 0) {
-        const scoreRef = db.ref(`players/${playerId}/score`);
-        const scoreSnap = await scoreRef.once('value');
-        await scoreRef.set((scoreSnap.val() || 0) + points);
-      }
-
-      document.getElementById('waitEmoji').textContent = question.type === 'poll' ? '📊' : '⏳';
-      document.getElementById('waitText').textContent = question.type === 'poll' ? 'Vote submitted!' : 'Answer locked in!';
-      showScreen('screenWaiting');
     }
 
-    async function showResults(qIndex) {
-      clearInterval(timerInterval);
-      const q = questions[qIndex];
-      if (!q) return;
-
-      if (q.type === 'poll') {
-        document.getElementById('resultIcon').textContent = '📊';
-        document.getElementById('resultText').textContent = 'Poll results are in!';
-        document.getElementById('resultPoints').textContent = 'No points for polls';
-        document.getElementById('resultTotal').textContent = '';
-        showScreen('screenResult');
-        return;
-      }
-
-      const ansSnap = await db.ref(`answers/${qIndex}/${playerId}`).once('value');
-      const ans = ansSnap.val();
-      const scoreSnap = await db.ref(`players/${playerId}/score`).once('value');
-      const totalScore = scoreSnap.val() || 0;
-
-      if (!ans) {
-        document.getElementById('resultIcon').textContent = '⏰';
-        document.getElementById('resultText').textContent = "Time's up! No answer submitted";
-        document.getElementById('resultPoints').textContent = '+0 points';
-      } else if (ans.answer === q.correct) {
-        document.getElementById('resultIcon').textContent = '🎉';
-        document.getElementById('resultText').textContent = 'Correct! Shabash!';
-        document.getElementById('resultPoints').textContent = `+${ans.points} points`;
-      } else {
-        document.getElementById('resultIcon').textContent = '😅';
-        document.getElementById('resultText').textContent = `Wrong! Answer was: ${q.options[q.correct]}`;
-        document.getElementById('resultPoints').textContent = '+0 points';
-      }
-      document.getElementById('resultTotal').textContent = `Total: ${totalScore} pts`;
-      showScreen('screenResult');
+    function updateStatus() {
+      const phase = currentGameState.phase || 'lobby';
+      const el = document.getElementById('currentPhase');
+      el.textContent = phase.toUpperCase();
+      el.className = 'status-badge ' + (phase === 'question' ? 'active' : phase === 'results' ? 'results' : phase === 'finished' ? 'finished' : 'lobby');
+      const qNum = currentGameState.currentQuestion;
+      document.getElementById('currentQNum').textContent = qNum !== undefined ? `${qNum + 1}/${questions.length}` : '—';
+      renderQuestionList();
     }
 
-    async function showLeaderboard() {
-      clearInterval(timerInterval);
-      const snap = await db.ref('players').orderByChild('score').once('value');
-      const players = [];
-      snap.forEach(child => { players.push({ id: child.key, ...child.val() }); });
-      players.sort((a, b) => (b.score || 0) - (a.score || 0));
-
-      const container = document.getElementById('leaderboardList');
+    function renderQuestionList() {
+      const container = document.getElementById('questionList');
       container.innerHTML = '';
-      const medals = ['🥇', '🥈', '🥉'];
+      const currentQ = currentGameState.currentQuestion;
 
-      players.slice(0, 10).forEach((p, i) => {
+      questions.forEach((q, i) => {
         const div = document.createElement('div');
-        div.className = 'leaderboard-item';
-        if (p.id === playerId) div.style.cssText = 'border: 1px solid var(--primary); background: rgba(124,58,237,0.1);';
-        div.innerHTML = `
-          <span class="rank">${i < 3 ? medals[i] : i + 1}</span>
-          <span class="name">${p.name}${p.id === playerId ? ' (You)' : ''}</span>
-          <span class="score">${p.score || 0}</span>
-        `;
+        div.className = 'question-list-item' + (i === currentQ ? ' current' : '') + (currentQ !== undefined && i < currentQ ? ' done' : '');
+        div.innerHTML = `<span class="q-num">${i + 1}</span><span class="q-text">${q.question}</span><span class="q-type">${q.type}</span>`;
+        div.onclick = () => jumpToQuestion(i);
         container.appendChild(div);
       });
-
-      const myRank = players.findIndex(p => p.id === playerId) + 1;
-      document.getElementById('yourRank').textContent = myRank > 0 ? `Your rank: #${myRank} of ${players.length}` : '';
-      showScreen('screenLeaderboard');
     }
 
-    async function showFinished() {
-      clearInterval(timerInterval);
-      const scoreSnap = await db.ref(`players/${playerId}/score`).once('value');
-      document.getElementById('finalScore').textContent = `${scoreSnap.val() || 0} Points`;
+    async function action(type) {
+      const currentQ = currentGameState.currentQuestion || 0;
+      switch (type) {
+        case 'lobby': await db.ref('gameState').set({ phase: 'lobby', currentQuestion: currentQ }); break;
+        case 'startQuestion':
+          const qIdx = currentGameState.currentQuestion || 0;
+          await db.ref('gameState').set({ phase: 'question', currentQuestion: qIdx, questionStartedAt: Date.now() });
+          break;
+        case 'showResults': await db.ref('gameState').update({ phase: 'results' }); break;
+        case 'showLeaderboard': await db.ref('gameState').update({ phase: 'leaderboard' }); break;
+        case 'nextQuestion':
+          const next = (currentGameState.currentQuestion || 0) + 1;
+          if (next >= questions.length) await db.ref('gameState').set({ phase: 'finished' });
+          else await db.ref('gameState').set({ phase: 'lobby', currentQuestion: next });
+          break;
+        case 'finish': await db.ref('gameState').set({ phase: 'finished' }); break;
+        case 'reset':
+          await db.ref('gameState').remove();
+          await db.ref('players').remove();
+          await db.ref('answers').remove();
+          await db.ref('customQuestions').remove();
+          break;
+      }
+    }
 
-      const snap = await db.ref('players').orderByChild('score').once('value');
-      const players = [];
-      snap.forEach(child => players.push({ id: child.key, ...child.val() }));
-      players.sort((a, b) => (b.score || 0) - (a.score || 0));
+    async function jumpToQuestion(index) {
+      if (confirm(`Jump to Question ${index + 1}?`)) {
+        await db.ref('gameState').set({ phase: 'lobby', currentQuestion: index });
+      }
+    }
 
-      const container = document.getElementById('finalLeaderboard');
-      container.innerHTML = '<h3 style="text-align:center; margin-bottom: 16px;">Final Standings</h3>';
-      const medals = ['🥇', '🥈', '🥉'];
-
-      players.slice(0, 10).forEach((p, i) => {
-        const div = document.createElement('div');
-        div.className = 'leaderboard-item';
-        if (p.id === playerId) div.style.cssText = 'border: 1px solid var(--primary); background: rgba(124,58,237,0.1);';
-        div.innerHTML = `
-          <span class="rank">${i < 3 ? medals[i] : i + 1}</span>
-          <span class="name">${p.name}${p.id === playerId ? ' (You)' : ''}</span>
-          <span class="score">${p.score || 0}</span>
-        `;
-        container.appendChild(div);
-      });
-      showScreen('screenFinished');
+    async function addQuestion() {
+      const q = {
+        id: questions.length + 1,
+        type: document.getElementById('newQType').value,
+        question: document.getElementById('newQ').value.trim(),
+        options: document.getElementById('newQOptions').value.split(',').map(s => s.trim()),
+        correct: parseInt(document.getElementById('newQCorrect').value),
+        points: parseInt(document.getElementById('newQPoints').value),
+        timeLimit: parseInt(document.getElementById('newQTime').value)
+      };
+      if (!q.question || q.options.length < 2) { alert('Fill in question and at least 2 options!'); return; }
+      await db.ref('customQuestions').push(q);
+      document.getElementById('newQ').value = '';
+      document.getElementById('newQOptions').value = '';
+      alert('Question added!');
     }
   </script>
 </body>
